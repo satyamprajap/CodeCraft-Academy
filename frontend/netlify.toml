@@ -1,0 +1,6 @@
+# The frontend is a static HTML site with no build step.
+# These settings override the build settings saved in the Netlify UI.
+[build]
+  command = "echo 'No build step required for static site'"
+  publish = "."
+  functions = "netlify/functions"
