@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revision Notes — CodeCraft Academy</title>
+    <link rel="stylesheet" href="/assets/pages.css">
+</head>
+
+<body>
+    <main class="shell">
+
+        <!-- Header -->
+        <header class="bar">
+            <a class="brand" href="/">
+                <span class="logo">C</span>
+                <span>CodeCraft Academy</span>
+            </a>
+
+            <nav class="links">
+                <a href="/">Overview</a>
+                <a href="/courses">Courses</a>
+                <a href="/notes">Notes</a>
+                <a href="/projects">Projects</a>
+                <a href="/profile">Profile</a>
+                <a href="#" id="logout">Log out</a>
+            </nav>
+        </header>
+
+        <!-- Introduction -->
+        <section class="intro">
+            <small>Revision library</small>
+
+            <h1>Notes & Quick Revision</h1>
+
+            <p>
+                Short revision sheets for important topics.
+                Use the full curriculum for topic-by-topic checklists
+                and code examples. Use the links below to find
+                printable PDF notes.
+            </p>
+
+            <input
+                class="search"
+                id="noteSearch"
+                type="search"
+                placeholder="Search Java, SQL, React, Spring Boot..."
+            >
+        </section>
+
+        <!-- Notes Grid -->
+        <section class="grid" id="noteGrid">
+
+            <div class="card" data-search="java core oop collections exception streams">
+                <h2>☕ Java Fundamentals</h2>
+                <p>
+                    OOP, collections, exception handling, generics,
+                    streams and JVM revision.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=Java+handwritten+revision+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="dsa algorithms data structures interview">
+                <h2>🧠 DSA with Java</h2>
+                <p>
+                    Complexity, arrays, strings, recursion, trees,
+                    graphs and algorithm patterns.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=DSA+with+Java+handwritten+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="sql database joins transactions">
+                <h2>🗄️ SQL & Database</h2>
+                <p>
+                    Joins, aggregation, subqueries, indexes,
+                    normalization and transactions.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=SQL+handwritten+revision+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="mongodb nosql redis cache">
+                <h2>🍃 MongoDB & NoSQL</h2>
+                <p>
+                    Documents, CRUD, indexes, aggregation pipelines
+                    and schema choices.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=MongoDB+handwritten+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="spring boot backend rest api security">
+                <h2>🚀 Spring Boot</h2>
+                <p>
+                    Dependency injection, REST APIs, validation,
+                    JPA, security and testing.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=Spring+Boot+handwritten+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="react javascript frontend hooks">
+                <h2>⚛️ React & JavaScript</h2>
+                <p>
+                    Components, hooks, state, effects, routing
+                    and fetch/API patterns.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=React+JavaScript+revision+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="devops docker jenkins git ci cd">
+                <h2>🐳 DevOps & Git</h2>
+                <p>
+                    Git workflow, Docker, CI/CD, environment
+                    variables and deployment.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=DevOps+Docker+handwritten+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="hibernate jpa jdbc persistence">
+                <h2>🔌 JDBC, Hibernate & JPA</h2>
+                <p>
+                    Connections, ORM, entity mappings,
+                    repositories and transactions.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=Hibernate+JPA+revision+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+            <div class="card" data-search="node express api">
+                <h2>🟩 Node.js & APIs</h2>
+                <p>
+                    Runtime basics, routing, middleware,
+                    async behavior and API design.
+                </p>
+                <a class="tag" target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/search?q=Node.js+Express+revision+notes+PDF">
+                    Find PDF Notes ↗
+                </a>
+            </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            CodeCraft Academy · Full Stack Java Learning Workspace
+            <span id="sessionName"></span>
+        </footer>
+
+    </main>
+
+    <!-- Authentication Script -->
+    <script>
+        fetch('/api/auth/me')
+            .then(response => {
+                if (!response.ok) {
+                    location.replace('/login');
+                    throw new Error('Not authenticated');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('sessionName').textContent =
+                    ' · Signed in as ' + data.user.name;
+            })
+            .catch(() => location.replace('/login'));
+
+        document.getElementById('logout')
+            .addEventListener('click', async event => {
+                event.preventDefault();
+
+                await fetch('/api/auth/logout', {
+                    method: 'POST'
+                });
+
+                location.replace('/login');
+            });
+    </script>
+
+    <!-- Notes Search Script -->
+    <script>
+        document.getElementById('noteSearch')
+            .addEventListener('input', event => {
+
+                const query = event.target.value.toLowerCase();
+
+                document.querySelectorAll('#noteGrid .card')
+                    .forEach(card => {
+
+                        const content = (
+                            card.dataset.search + ' ' + card.innerText
+                        ).toLowerCase();
+
+                        card.hidden = !content.includes(query);
+                    });
+            });
+    </script>
+
+</body>
+</html>

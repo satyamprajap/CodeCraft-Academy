@@ -1,0 +1,231 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b1020;
+  --panel: #111a30;
+  --line: #263653;
+  --text: #edf3ff;
+  --muted: #9eacc7;
+  --accent: #9b8cff;
+  --mint: #65dfc7;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  font:
+    15px/1.6 Inter,
+    system-ui,
+    sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 80% 0%, #292453 0, transparent 36%), var(--bg);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input {
+  font: inherit;
+}
+.auth-wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  max-width: 1200px;
+  margin: auto;
+  padding: 28px;
+  gap: clamp(30px, 6vw, 90px);
+  align-items: center;
+}
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.logo {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--accent), var(--mint));
+  color: #101329;
+  font-size: 21px;
+  font-weight: 900;
+}
+.brand strong {
+  display: block;
+  font-size: 17px;
+}
+.brand small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.pitch {
+  padding: 20px 0;
+}
+.eyebrow {
+  display: inline-block;
+  border: 1px solid #3d827e;
+  background: #123d484a;
+  border-radius: 30px;
+  padding: 5px 10px;
+  color: #b8fff0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.pitch h1 {
+  font-size: clamp(36px, 5vw, 62px);
+  line-height: 1.08;
+  letter-spacing: -2px;
+  margin: 23px 0 15px;
+}
+.gradient {
+  background: linear-gradient(90deg, #b8adff, #66e5ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.pitch p {
+  max-width: 500px;
+  color: #b9c5dc;
+  font-size: 16px;
+}
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 28px;
+}
+.feature {
+  border: 1px solid var(--line);
+  background: #111a30a8;
+  border-radius: 14px;
+  padding: 14px;
+}
+.feature b {
+  display: block;
+  font-size: 13px;
+}
+.feature span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.auth-card {
+  border: 1px solid var(--line);
+  background: #111a30ed;
+  border-radius: 24px;
+  padding: clamp(22px, 4vw, 38px);
+  box-shadow: 0 25px 80px #0004;
+}
+.auth-card h2 {
+  font-size: 27px;
+  letter-spacing: -0.8px;
+  margin: 0;
+}
+.sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 5px 0 24px;
+}
+.field {
+  margin: 15px 0;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 7px;
+  color: #d6def0;
+}
+.field input {
+  width: 100%;
+  border: 1px solid #34415e;
+  border-radius: 11px;
+  background: #0b1224;
+  color: var(--text);
+  padding: 12px 13px;
+  outline: none;
+}
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px #9b8cff20;
+}
+.submit {
+  width: 100%;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(100deg, #9b8cff, #65dfc7);
+  color: #101329;
+  font-weight: 900;
+  padding: 13px;
+  margin-top: 9px;
+  cursor: pointer;
+}
+.submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.message {
+  display: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin: 12px 0;
+  font-size: 12px;
+}
+.message.error {
+  display: block;
+  background: #4b1e2b;
+  color: #ffd3db;
+  border: 1px solid #8a3b50;
+}
+.message.success {
+  display: block;
+  background: #123a32;
+  color: #b8fff0;
+  border: 1px solid #2b655f;
+}
+.switch {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 20px;
+}
+.switch a {
+  color: #c5bcff;
+  font-weight: 800;
+}
+.fine {
+  font-size: 11px;
+  color: #7483a1;
+  margin-top: 18px;
+  text-align: center;
+}
+@media (max-width: 850px) {
+  .auth-wrap {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    padding: 20px;
+  }
+  .pitch {
+    padding: 4px 0;
+  }
+  .pitch h1 {
+    font-size: 38px;
+  }
+  .pitch p,
+  .features {
+    display: none;
+  }
+  .auth-card {
+    margin-bottom: 20px;
+  }
+}

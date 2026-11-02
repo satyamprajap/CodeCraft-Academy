@@ -1,0 +1,2531 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#10152b" />
+    <title>CodeCraft — Full Stack Java Academy</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #111a30;
+        --panel2: #16223b;
+        --text: #edf3ff;
+        --muted: #9eacc7;
+        --line: #263653;
+        --accent: #8b7cff;
+        --accent2: #42d6b5;
+        --yellow: #ffd166;
+        --shadow: 0 18px 50px #0003;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 80% 0%, #20204b 0, transparent 36%),
+          var(--bg);
+        color: var(--text);
+        font:
+          15px/1.6 Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          sans-serif;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 265px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        border-right: 1px solid var(--line);
+        padding: 22px 16px;
+        background: #0b1020ef;
+        backdrop-filter: blur(16px);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 5px 8px 22px;
+      }
+      .logo {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--accent), #49d9bd);
+        font-weight: 900;
+        color: #0b1020;
+        font-size: 19px;
+      }
+      .brand strong {
+        display: block;
+        font-size: 17px;
+        letter-spacing: -0.5px;
+      }
+      .brand small {
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+      }
+      .side-label {
+        font-size: 10px;
+        letter-spacing: 1.6px;
+        color: #7888a9;
+        font-weight: 800;
+        margin: 18px 10px 7px;
+      }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .nav button {
+        background: transparent;
+        color: #b9c5dc;
+        border: 0;
+        border-radius: 10px;
+        text-align: left;
+        padding: 10px 11px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+      }
+      .nav button:hover,
+      .nav button.active {
+        background: #202a48;
+        color: white;
+      }
+      .nav button.active {
+        box-shadow: inset 3px 0 var(--accent);
+      }
+      .nav .ico {
+        width: 20px;
+        text-align: center;
+      }
+      .sidebar-foot {
+        margin-top: 26px;
+        padding: 13px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: linear-gradient(145deg, #171c39, #10192a);
+        font-size: 12px;
+        color: var(--muted);
+      }
+      main {
+        min-width: 0;
+        padding: 25px clamp(16px, 3.5vw, 48px) 60px;
+        max-width: 1500px;
+        width: 100%;
+        margin: auto;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 28px;
+      }
+      .crumb {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .top-actions {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+      }
+      .iconbtn,
+      .outline {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--text);
+        border-radius: 11px;
+        padding: 9px 12px;
+      }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(24px, 4vw, 48px);
+        border: 1px solid #34365f;
+        border-radius: 26px;
+        background: linear-gradient(
+          115deg,
+          #20204b 0%,
+          #18294a 54%,
+          #123a45 100%
+        );
+        box-shadow: var(--shadow);
+      }
+      .hero:after {
+        content: "{ }";
+        position: absolute;
+        right: 4%;
+        top: 3%;
+        font-size: clamp(90px, 15vw, 200px);
+        font-weight: 900;
+        color: #fff0a;
+        opacity: 0.08;
+        letter-spacing: -20px;
+        pointer-events: none;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #b8fff0;
+        border: 1px solid #3d827e;
+        background: #123d48a8;
+        border-radius: 30px;
+        padding: 5px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .hero h1 {
+        font-size: clamp(32px, 5vw, 60px);
+        line-height: 1.05;
+        letter-spacing: -2px;
+        max-width: 800px;
+        margin: 18px 0 14px;
+      }
+      .gradient {
+        background: linear-gradient(90deg, #b8adff, #66e5ca);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero p {
+        max-width: 700px;
+        color: #c4d2ed;
+        font-size: 16px;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 25px;
+      }
+      .primary {
+        background: linear-gradient(100deg, #9b8cff, #65dfc7);
+        border: 0;
+        color: #101329;
+        font-weight: 800;
+        padding: 12px 17px;
+        border-radius: 12px;
+      }
+      .secondary {
+        background: #ffffff12;
+        border: 1px solid #ffffff32;
+        color: #fff;
+        padding: 12px 17px;
+        border-radius: 12px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0 34px;
+      }
+      .stat {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+      }
+      .stat strong {
+        display: block;
+        font-size: 25px;
+        letter-spacing: -1px;
+      }
+      .stat span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 14px;
+        margin: 32px 0 15px;
+      }
+      .section-head h2 {
+        margin: 0;
+        font-size: 24px;
+        letter-spacing: -0.7px;
+      }
+      .section-head p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .tiny-link {
+        color: #b9b1ff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .track-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 13px;
+      }
+      .track {
+        background: linear-gradient(145deg, var(--panel), #10172a);
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        padding: 18px;
+        transition: 0.2s;
+      }
+      .track:hover {
+        transform: translateY(-3px);
+        border-color: #6e6ab7;
+      }
+      .track .track-icon {
+        font-size: 25px;
+      }
+      .track h3 {
+        font-size: 16px;
+        margin: 10px 0 5px;
+      }
+      .track p {
+        color: var(--muted);
+        font-size: 12px;
+        min-height: 38px;
+        margin: 0 0 15px;
+      }
+      .progress-line {
+        height: 5px;
+        border-radius: 5px;
+        background: #283651;
+        overflow: hidden;
+        margin: 10px 0;
+      }
+      .progress-line span {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        transition: width 0.25s;
+      }
+      .track-meta {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .search-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 18px 0;
+      }
+      .search {
+        flex: 1;
+        min-width: 220px;
+        position: relative;
+      }
+      .search input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: var(--panel);
+        padding: 13px 14px 13px 42px;
+        color: var(--text);
+        outline: none;
+      }
+      .search:before {
+        content: "⌕";
+        position: absolute;
+        left: 15px;
+        top: 7px;
+        font-size: 23px;
+        color: var(--muted);
+      }
+      select {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        color: var(--text);
+        padding: 10px 12px;
+      }
+      .learning-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 16px;
+        align-items: start;
+      }
+      .topic-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .pdf-download-row {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: 12px;
+      }
+
+      .pdf-download-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 7px;
+        background: #12322f;
+        color: #b8fff0;
+        font-size: 11px;
+        text-decoration: none;
+      }
+      .topic {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        overflow: hidden;
+      }
+      .topic summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+      }
+      .topic summary::-webkit-details-marker {
+        display: none;
+      }
+      .topic summary .num {
+        display: grid;
+        place-items: center;
+        width: 35px;
+        height: 35px;
+        flex: 0 0 35px;
+        background: #29284f;
+        border-radius: 11px;
+        color: #c9c1ff;
+        font-weight: 800;
+      }
+      .topic summary h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .topic summary p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .topic summary .chev {
+        margin-left: auto;
+        color: var(--muted);
+      }
+      .topic-body {
+        padding: 0 16px 16px;
+        border-top: 1px solid var(--line);
+      }
+      .topic-body h4 {
+        font-size: 12px;
+        color: #c7c1ff;
+        margin: 15px 0 5px;
+      }
+      .topic-body ul {
+        margin: 5px 0 12px;
+        padding-left: 19px;
+        color: #bdc9df;
+        font-size: 12px;
+      }
+      .topic-body li {
+        margin: 4px 0;
+      }
+      .topic-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 13px;
+      }
+      .pill-link {
+        font-size: 11px;
+        color: #b8fff0;
+        border: 1px solid #2b655f;
+        border-radius: 8px;
+        padding: 6px 9px;
+        background: #12322f;
+      }
+      .done-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 13px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .done-row input {
+        accent-color: var(--accent2);
+        width: 16px;
+        height: 16px;
+      }
+      .side-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        padding: 18px;
+        margin-bottom: 14px;
+      }
+      .side-card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .side-card p,
+      .side-card li {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .note-paper {
+        background: #f8f2df;
+        color: #27314b;
+        border-radius: 13px;
+        padding: 19px 17px 17px;
+        position: relative;
+        font-family: "Comic Sans MS", "Segoe Print", cursive;
+        box-shadow: 0 7px 18px #0002;
+        transform: rotate(-0.4deg);
+      }
+      .note-paper:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 38px;
+        border-top: 1px solid #9fb8d7;
+      }
+      .note-paper h3 {
+        margin: 0 0 20px;
+        color: #38346c;
+        font-size: 20px;
+      }
+      .note-paper p {
+        color: #303a56;
+        font-size: 13px;
+        margin: 7px 0;
+      }
+      .note-paper code {
+        font-family: ui-monospace, monospace;
+        background: #e9e3ce;
+        padding: 2px 5px;
+        border-radius: 4px;
+      }
+      .note-paper .scribble {
+        color: #8a397a;
+        font-weight: 700;
+      }
+      .video-list {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .video {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .play {
+        display: grid;
+        place-items: center;
+        width: 35px;
+        height: 35px;
+        background: #452238;
+        color: #ff9bb6;
+        border-radius: 10px;
+        flex-shrink: 0;
+      }
+      .video b {
+        display: block;
+        font-size: 12px;
+      }
+      .video small {
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .video a {
+        margin-left: auto;
+        color: #b9b1ff;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .resources {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 11px;
+      }
+      .resource {
+        padding: 15px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+      .resource b {
+        display: block;
+        font-size: 13px;
+      }
+      .resource span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        margin: 5px 0 10px;
+      }
+      .resource a {
+        color: #b9b1ff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .roadmap {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .step {
+        padding: 13px;
+        border-radius: 12px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+      .step strong {
+        font-size: 11px;
+        color: var(--accent2);
+        display: block;
+      }
+      .step span {
+        font-size: 12px;
+        font-weight: 700;
+        display: block;
+        margin-top: 4px;
+      }
+      .step small {
+        color: var(--muted);
+        font-size: 10px;
+      }
+      footer {
+        margin-top: 42px;
+        border-top: 1px solid var(--line);
+        padding: 20px 0;
+        color: var(--muted);
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .empty {
+        padding: 25px;
+        text-align: center;
+        color: var(--muted);
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+      }
+      .light {
+        --bg: #f3f5fb;
+        --panel: #fff;
+        --panel2: #f7f8ff;
+        --text: #17213a;
+        --muted: #63708a;
+        --line: #dce2ef;
+        --shadow: 0 18px 50px #20305012;
+        background:
+          radial-gradient(ellipse at 80% 0%, #e3e3ff 0, transparent 36%),
+          var(--bg);
+      }
+      .light .sidebar {
+        background: #f7f8ffed;
+      }
+      .light .hero {
+        background: linear-gradient(115deg, #dcd9ff, #d9e9ff 55%, #c8f3e9);
+      }
+      .light .hero p {
+        color: #3e4d6b;
+      }
+      .light .hero h1 {
+        color: #18213b;
+      }
+      .light .secondary {
+        color: #18213b;
+        border-color: #65749a55;
+      }
+      .light .topic-body ul {
+        color: #46536c;
+      }
+      .light .track {
+        background: var(--panel);
+      }
+      @media (max-width: 1050px) {
+        .layout {
+          grid-template-columns: 220px minmax(0, 1fr);
+        }
+        .track-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .resources {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .learning-layout {
+          grid-template-columns: 1fr;
+        }
+        .right-column {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+        }
+        .right-column .side-card {
+          margin: 0;
+        }
+      }
+      @media (max-width: 720px) {
+        .layout {
+          display: block;
+        }
+        .sidebar {
+          position: relative;
+          height: auto;
+          max-height: none;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+          padding: 10px 13px;
+        }
+        .brand {
+          padding: 4px 3px 9px;
+        }
+        .sidebar .side-label,
+        .sidebar-foot {
+          display: none;
+        }
+        .nav {
+          flex-direction: row;
+          overflow: auto;
+          padding-bottom: 3px;
+        }
+        .nav button {
+          white-space: nowrap;
+          padding: 8px 10px;
+        }
+        .nav .ico {
+          display: none;
+        }
+        main {
+          padding: 16px;
+        }
+        .topbar {
+          margin-bottom: 16px;
+        }
+        .stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .track-grid {
+          grid-template-columns: 1fr;
+        }
+        .roadmap {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .resources {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .right-column {
+          display: flex;
+          flex-direction: column;
+        }
+        .hero h1 {
+          letter-spacing: -1px;
+        }
+        .hero:after {
+          right: -30px;
+        }
+        .section-head h2 {
+          font-size: 21px;
+        }
+      }
+      @media print {
+        .sidebar,
+        .topbar,
+        .hero-actions,
+        .search-row,
+        .top-actions,
+        .topic-links,
+        .done-row,
+        footer {
+          display: none !important;
+        }
+        .layout {
+          display: block;
+        }
+        main {
+          padding: 0;
+        }
+        .hero,
+        .track,
+        .topic,
+        .side-card {
+          break-inside: avoid;
+          box-shadow: none;
+        }
+        .hero {
+          background: #eee !important;
+          color: #111 !important;
+        }
+        .hero p {
+          color: #333 !important;
+        }
+        .topic:not([open]) .topic-body {
+          display: block;
+        }
+        .learning-layout {
+          display: block;
+        }
+        body {
+          background: white;
+          color: #111;
+        }
+        .topic,
+        .side-card,
+        .track {
+          border-color: #aaa;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="logo">C</div>
+          <div>
+            <strong>CodeCraft Academy</strong
+            ><small>Full Stack Java Path</small>
+          </div>
+        </div>
+        <div class="side-label">LEARN</div>
+        <nav class="nav" id="nav">
+          <button class="active" data-scroll="home">
+            <span class="ico">⌂</span>Overview
+          </button>
+          <button data-scroll="tracks">
+            <span class="ico">▦</span>Learning Tracks
+          </button>
+          <button data-scroll="curriculum">
+            <span class="ico">☷</span>All Topics
+          </button>
+          <button data-scroll="notes">
+            <span class="ico">✎</span>Handwritten Notes
+          </button>
+          <button data-scroll="videos">
+            <span class="ico">▶</span>YouTube Library
+          </button>
+          <button data-scroll="projects">
+            <span class="ico">⌘</span>Projects & Roadmap
+          </button>
+          <button data-scroll="resources">
+            <span class="ico">↗</span>Official Resources
+          </button>
+          <button onclick="location.href = '/courses'">
+            <span class="ico">▤</span>Courses
+          </button>
+          <button onclick="location.href = '/notes'">
+            <span class="ico">✎</span>Notes Library
+          </button>
+          <button onclick="location.href = '/projects'">
+            <span class="ico">⌘</span>Projects
+          </button>
+          <button onclick="location.href = '/profile'">
+            <span class="ico">◉</span>My Profile
+          </button>
+          <a href="/about">About</a>
+        </nav>
+        <div class="side-label">YOUR LEARNING</div>
+        <div class="sidebar-foot">
+          <strong style="color: var(--text)">Small steps. Real skills.</strong
+          ><br />Mark topics complete to keep your learning progress saved in
+          this browser.
+        </div>
+      </aside>
+      <main>
+        <div class="topbar">
+          <div class="crumb">Academy / <span id="crumb">Overview</span></div>
+          <div class="top-actions">
+            <button class="iconbtn" id="themeBtn" title="Toggle theme">
+              ☼ Theme</button
+            ><button class="iconbtn" onclick="window.print()">
+              ⇩ Print notes
+            </button>
+          </div>
+        </div>
+        <section class="hero" id="home">
+          <span class="eyebrow">✦ YOUR DEVELOPER JOURNEY STARTS HERE</span>
+          <h1>
+            From <span class="gradient">Java beginner</span><br />to full stack
+            builder.
+          </h1>
+          <p>
+            One structured learning hub for Core Java, DSA, SQL, Spring Boot,
+            APIs, React, testing, cloud, DevOps and AI-assisted development.
+            Study notes, watch lessons, practise code and build portfolio
+            projects.
+          </p>
+          <div class="hero-actions">
+            <button
+              class="primary"
+              onclick="
+                document
+                  .getElementById('curriculum')
+                  .scrollIntoView({ behavior: 'smooth' })
+              "
+            >
+              Start learning →</button
+            ><a
+              class="secondary"
+              href="https://www.youtube.com/watch?v=q6z_UCBM5Ek"
+              target="_blank"
+              rel="noreferrer"
+              >▶ 63-hour Java roadmap</a
+            >
+          </div>
+        </section>
+        <div class="stats">
+          <div class="stat">
+            <strong id="doneCount">0</strong><span>Topics completed</span>
+          </div>
+          <div class="stat">
+            <strong id="totalCount">0</strong><span>Learning topics</span>
+          </div>
+          <div class="stat"><strong>8</strong><span>Learning stages</span></div>
+          <div class="stat">
+            <strong>∞</strong><span>Practice opportunities</span>
+          </div>
+        </div>
+        <section id="tracks">
+          <div class="section-head">
+            <div>
+              <h2>Choose your learning track</h2>
+              <p>Follow the sequence or jump to a topic you need today.</p>
+            </div>
+          </div>
+          <div class="track-grid" id="trackGrid"></div>
+        </section>
+        <section id="curriculum">
+          <div class="section-head">
+            <div>
+              <h2>Complete curriculum</h2>
+              <p>
+                Based on your uploaded Full Stack Developer Complete Syllabus.
+                Search, open a module and mark it complete.
+              </p>
+            </div>
+            <a
+              class="tiny-link"
+              href="https://dev.java/learn/"
+              target="_blank"
+              rel="noreferrer"
+              >Java official learning ↗</a
+            >
+          </div>
+          <div class="search-row">
+            <div class="search">
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Search Java, HashMap, SQL joins, Spring Security..."
+                aria-label="Search curriculum"
+              />
+            </div>
+            <select id="trackFilter" aria-label="Filter by track">
+              <option value="all">All tracks</option></select
+            ><select id="statusFilter" aria-label="Filter by status">
+              <option value="all">All progress</option>
+              <option value="todo">Not completed</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+          <div class="learning-layout">
+            <div class="topic-list" id="topicList"></div>
+            <div class="right-column">
+              <div class="side-card" id="notes">
+                <h3>✎ Handwritten-style quick notes</h3>
+                <p>
+                  Short revision cards in a notebook style. Open any module for
+                  its topic checklist and video search.
+                </p>
+                <div class="note-paper">
+                  <h3>Java Basics ✍</h3>
+                  <p>
+                    <span class="scribble">Definition:</span> Java is a
+                    high-level, class-based programming language designed to be
+                    portable.
+                  </p>
+                  <p>
+                    <span class="scribble">Flow:</span> <code>.java</code> →
+                    <code>javac</code> → bytecode <code>.class</code> → JVM
+                  </p>
+                  <p>
+                    <span class="scribble">OOP:</span> Encapsulation ·
+                    Inheritance · Polymorphism · Abstraction
+                  </p>
+                  <p>
+                    <span class="scribble">Remember:</span> compile, run, test
+                    edge cases, then explain the code in your own words.
+                  </p>
+                  <p style="text-align: right; color: #777; font-size: 11px">
+                    — Revision notebook
+                  </p>
+                </div>
+              </div>
+              <div class="side-card" id="videos">
+                <h3>▶ YouTube learning library</h3>
+                <p>
+                  Curated starting points plus one-click topic-specific YouTube
+                  searches.
+                </p>
+                <div class="video-list">
+                  <div class="video">
+                    <div class="play">▶</div>
+                    <div>
+                      <b>Java Tutorial for Beginners</b
+                      ><small>Telusko · Core Java</small>
+                    </div>
+                    <a
+                      href="https://www.youtube.com/watch?v=8cm1x4bC610"
+                      target="_blank"
+                      rel="noreferrer"
+                      >Watch ↗</a
+                    >
+                  </div>
+                  <div class="video">
+                    <div class="play">▶</div>
+                    <div>
+                      <b>Full Stack Java — 63-hour roadmap</b
+                      ><small>Telusko · Java to cloud</small>
+                    </div>
+                    <a
+                      href="https://www.youtube.com/watch?v=q6z_UCBM5Ek"
+                      target="_blank"
+                      rel="noreferrer"
+                      >Watch ↗</a
+                    >
+                  </div>
+                  <div class="video">
+                    <div class="play">▶</div>
+                    <div>
+                      <b>Spring Boot tutorials</b
+                      ><small>Guides and practical demos</small>
+                    </div>
+                    <a
+                      href="https://www.youtube.com/results?search_query=Spring+Boot+full+course"
+                      target="_blank"
+                      rel="noreferrer"
+                      >Find ↗</a
+                    >
+                  </div>
+                  <div class="video">
+                    <div class="play">▶</div>
+                    <div>
+                      <b>DSA with Java</b
+                      ><small>Algorithms and interview practice</small>
+                    </div>
+                    <a
+                      href="https://www.youtube.com/results?search_query=DSA+Java+full+course"
+                      target="_blank"
+                      rel="noreferrer"
+                      >Find ↗</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="projects">
+          <div class="section-head">
+            <div>
+              <h2>Build real projects</h2>
+              <p>
+                Turn each stage into something you can demo, test and add to
+                GitHub.
+              </p>
+            </div>
+          </div>
+          <div class="track-grid">
+            <article class="track">
+              <div class="track-icon">📚</div>
+              <h3>1. Student Management System</h3>
+              <p>
+                Java OOP, collections, validation and file/database persistence.
+              </p>
+              <a
+                class="tiny-link"
+                href="https://www.youtube.com/results?search_query=Java+student+management+system+project"
+                target="_blank"
+                rel="noreferrer"
+                >Project tutorials ↗</a
+              >
+            </article>
+            <article class="track">
+              <div class="track-icon">🛒</div>
+              <h3>2. Spring Boot REST API</h3>
+              <p>
+                CRUD, MySQL, JPA, DTOs, validation, exception handling and API
+                docs.
+              </p>
+              <a
+                class="tiny-link"
+                href="https://spring.io/guides"
+                target="_blank"
+                rel="noreferrer"
+                >Official guides ↗</a
+              >
+            </article>
+            <article class="track">
+              <div class="track-icon">🧑‍💻</div>
+              <h3>3. Full Stack Task Manager</h3>
+              <p>
+                React UI, Spring Boot API, login, JWT, role checks and
+                deployment.
+              </p>
+              <a
+                class="tiny-link"
+                href="https://www.youtube.com/results?search_query=React+Spring+Boot+full+stack+project"
+                target="_blank"
+                rel="noreferrer"
+                >Project tutorials ↗</a
+              >
+            </article>
+            <article class="track">
+              <div class="track-icon">☁️</div>
+              <h3>4. Production-ready service</h3>
+              <p>
+                Docker, CI/CD, logs, health checks, cloud deploy and basic
+                monitoring.
+              </p>
+              <a
+                class="tiny-link"
+                href="https://spring.io/guides"
+                target="_blank"
+                rel="noreferrer"
+                >Build it ↗</a
+              >
+            </article>
+            <article class="track">
+              <div class="track-icon">🤖</div>
+              <h3>5. Java + AI assistant</h3>
+              <p>
+                Connect a Spring application to an AI API; add retrieval and
+                safe error handling.
+              </p>
+              <a
+                class="tiny-link"
+                href="https://www.youtube.com/results?search_query=Spring+AI+RAG+project"
+                target="_blank"
+                rel="noreferrer"
+                >Explore ↗</a
+              >
+            </article>
+            <article class="track">
+              <div class="track-icon">🧠</div>
+              <h3>6. DSA pattern notebook</h3>
+              <p>
+                Record brute force, optimized approach, complexity, dry run and
+                edge cases.
+              </p>
+              <a
+                class="tiny-link"
+                href="https://leetcode.com/problemset/"
+                target="_blank"
+                rel="noreferrer"
+                >Practice ↗</a
+              >
+            </article>
+          </div>
+        </section>
+        <section>
+          <div class="section-head">
+            <div>
+              <h2>Recommended study roadmap</h2>
+              <p>
+                Follow this order to build foundations before advanced
+                frameworks.
+              </p>
+            </div>
+          </div>
+          <div class="roadmap">
+            <div class="step">
+              <strong>STAGE 01</strong><span>Core Java</span
+              ><small>Syntax, OOP, collections</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 02</strong><span>DSA + SQL</span
+              ><small>Problem solving, data</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 03</strong><span>Web + JDBC</span
+              ><small>HTTP, APIs, persistence</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 04</strong><span>Spring Boot</span
+              ><small>REST, JPA, security</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 05</strong><span>Frontend</span
+              ><small>HTML, CSS, JS, React</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 06</strong><span>Testing</span
+              ><small>JUnit, Mockito, API tests</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 07</strong><span>Cloud + DevOps</span
+              ><small>Git, Docker, CI/CD</small>
+            </div>
+            <div class="step">
+              <strong>STAGE 08</strong><span>Advanced</span
+              ><small>Microservices, Kafka, AI</small>
+            </div>
+            <div class="step">
+              <strong>EVERY WEEK</strong><span>Build + revise</span
+              ><small>Project, tests, notebook</small>
+            </div>
+            <div class="step">
+              <strong>PLACEMENTS</strong><span>Interview prep</span
+              ><small>DSA, SQL, Java concepts</small>
+            </div>
+          </div>
+        </section>
+        <section id="resources">
+          <div class="section-head">
+            <div>
+              <h2>Trusted learning resources</h2>
+              <p>
+                Use official documentation for current syntax and production
+                practices.
+              </p>
+            </div>
+          </div>
+          <div class="resources">
+            <div class="resource">
+              <b>☕ Java / Dev.java</b
+              ><span>Modern Java learning, language and JVM.</span
+              ><a
+                href="https://dev.java/learn/"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>🌱 Spring Guides</b
+              ><span>REST, databases, security and cloud.</span
+              ><a
+                href="https://spring.io/guides"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>🗄️ MySQL Docs</b
+              ><span>SQL syntax, joins, indexes and queries.</span
+              ><a
+                href="https://dev.mysql.com/doc/"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>⚛️ React Learn</b
+              ><span>Components, props, state and hooks.</span
+              ><a
+                href="https://react.dev/learn"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>🧩 MDN Web Docs</b
+              ><span>HTML, CSS, JavaScript and browser APIs.</span
+              ><a
+                href="https://developer.mozilla.org/"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>🐙 Git Handbook</b
+              ><span>Version control and collaboration basics.</span
+              ><a
+                href="https://docs.github.com/en/get-started"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>🐳 Docker Docs</b
+              ><span>Images, containers and deployment.</span
+              ><a
+                href="https://docs.docker.com/get-started/"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+            <div class="resource">
+              <b>🧪 JUnit 5</b><span>Unit tests and test lifecycle.</span
+              ><a
+                href="https://junit.org/junit5/docs/current/user-guide/"
+                target="_blank"
+                rel="noreferrer"
+                >Open resource ↗</a
+              >
+            </div>
+          </div>
+        </section>
+        <footer>
+          <span>© CodeCraft Academy · Personal learning dashboard</span
+          ><span
+            >Progress stays in this browser · External videos and docs belong to
+            their owners.</span
+          >
+        </footer>
+      </main>
+    </div>
+    <script>
+      const modules = [
+        {
+          track: "Core Java",
+          icon: "☕",
+          title: "Java Introduction & Environment",
+          desc: "JDK, JVM, bytecode and first program",
+          topics: [
+            "History and evolution of Java",
+            "Features and editions: SE, EE, ME",
+            "JDK vs JRE vs JVM",
+            "Source code, bytecode and execution",
+            "javac, java and jar",
+            "Class structure and main()",
+            "Classpath, compilation and execution",
+          ],
+          note: "Java source is compiled to bytecode. The JVM loads and executes the bytecode on a supported platform.",
+          example: "javac Main.java\\njava Main",
+          pdf: "./java%20pdf/JavaIntroductionEnviroment.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "✍️",
+          title: "Language Fundamentals",
+          desc: "Tokens, identifiers, literals and variables",
+          topics: [
+            "Tokens and identifiers",
+            "Keywords and reserved words",
+            "Literals and numeric literals",
+            "Primitive and reference types",
+            "Local, instance and static variables",
+            "Scope and lifetime",
+            "final variables and constants",
+            "Unicode",
+          ],
+          note: "A variable stores a value or reference. Choose clear names and initialize local variables before use.",
+          example: "int age = 20;\\nfinal double PI = 3.14159;",
+          pdf: "./java%20pdf/Java_Tokens_Identifiers.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🔢",
+          title: "Data Types & Type Conversion",
+          desc: "Primitive types, casting and promotions",
+          topics: [
+            "byte, short, int, long",
+            "float, double, char, boolean",
+            "Integral and floating-point types",
+            "Widening and narrowing",
+            "Implicit and explicit casting",
+            "Overflow and underflow",
+            "Expression type promotion",
+            "Compound assignment conversion",
+          ],
+          note: "Widening conversions are usually automatic; narrowing can lose information and often needs an explicit cast.",
+          example: "int n = 10;\\ndouble d = n;\\nint x = (int) 9.8;",
+          pdf: "./java%20pdf/Java_Primitive_Types.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "➗",
+          title: "Operators & Assignments",
+          desc: "Expressions, precedence and evaluation",
+          topics: [
+            "Arithmetic and unary operators",
+            "Relational and equality operators",
+            "Logical and bitwise operators",
+            "Shift operators",
+            "Ternary / conditional operator",
+            "instanceof",
+            "Assignment and compound assignment",
+            "Precedence and associativity",
+            "Short-circuit evaluation and evaluation order",
+          ],
+          note: "Use parentheses when an expression is hard to read. && and || can skip evaluating the right-hand operand.",
+          example: "int max = (a > b) ? a : b;\\nif (age >= 18 && citizen) { }",
+          pdf: "./java%20pdf/Java_Operators_and_Expressions.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🔀",
+          title: "Flow Control",
+          desc: "Conditions, loops and jump statements",
+          topics: [
+            "if, if-else and nested if",
+            "switch and fall-through",
+            "for, while and do-while",
+            "Enhanced for loop",
+            "Nested loops",
+            "break and continue",
+            "Labeled break/continue",
+            "return and reachability",
+          ],
+          note: "Pick the loop that makes the stopping condition easiest to understand. Test zero and one-iteration cases.",
+          example:
+            "for (int i = 0; i < 5; i++) {\\n  System.out.println(i);\\n}",
+          pdf: "./java%20pdf/Java_Control_Flow_Loops_and_Jump_Statements.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🧮",
+          title: "Arrays",
+          desc: "One-dimensional, multidimensional and utilities",
+          topics: [
+            "Declaration, creation and initialization",
+            "Length and indexing",
+            "Multidimensional arrays",
+            "Jagged and anonymous arrays",
+            "Array of objects",
+            "java.util.Arrays",
+            "Sorting and searching",
+            "Copying and comparing arrays",
+          ],
+          note: "Array indexes start at zero. The final valid index is length - 1.",
+          example: "int[] nums = {4, 2, 9};\\nArrays.sort(nums);",
+          pdf: "./java%20pdf/Java_Arrays_Handwritten_Style.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "ƒ",
+          title: "Methods, Overloading & Recursion",
+          desc: "Parameters, varargs and recursive calls",
+          topics: [
+            "Method declaration and invocation",
+            "Parameters and return types",
+            "Pass-by-value",
+            "Static vs instance methods",
+            "Method overloading and rules",
+            "Compile-time polymorphism",
+            "Varargs and overloading",
+            "Recursion, base condition and call stack",
+          ],
+          note: "Every recursive solution needs a base case that guarantees progress toward termination.",
+          example:
+            "static int factorial(int n) {\\n if (n <= 1) return 1;\\n return n * factorial(n - 1);\\n}",
+          pdf: "./java%20pdf/Java_Methods_Handwritten_Style.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🧱",
+          title: "Classes, Objects & Constructors",
+          desc: "OOP foundations and initialization",
+          topics: [
+            "Class, object and reference variable",
+            "new and instance members",
+            "Default and parameterized constructors",
+            "Constructor overloading and chaining",
+            "this and this()",
+            "static members and blocks",
+            "Instance initialization blocks",
+            "Initialization order",
+            "Encapsulation, data hiding, getters/setters",
+          ],
+          note: "A class describes state and behavior; an object is a runtime instance of that class.",
+          example:
+            "class Student {\\n  private String name;\\n  Student(String name) { this.name = name; }\\n}",
+          pdf: "./java%20pdf/Java_Classes_Objects_Constructors.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🌳",
+          title: "Inheritance & Polymorphism",
+          desc: "extends, overriding, dispatch and casting",
+          topics: [
+            "Single, multilevel and hierarchical inheritance",
+            "Why classes do not support multiple inheritance",
+            "IS-A and HAS-A relationships",
+            "Composition",
+            "super and super()",
+            "Method overriding rules",
+            "Overloading vs overriding",
+            "Dynamic method dispatch and late binding",
+            "Upcasting, downcasting and ClassCastException",
+            "Covariant returns, static hiding and final methods",
+          ],
+          note: "Prefer composition when a type should use another object without inheriting its whole identity.",
+          example:
+            'class Animal { void sound() {} }\\nclass Dog extends Animal {\\n @Override void sound() { System.out.println("Woof"); }\\n}',
+          pdf: "./java%20pdf/Java Inheritance.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🎭",
+          title: "Abstraction, Interfaces & Packages",
+          desc: "Contracts, access modifiers and organization",
+          topics: [
+            "Abstract classes and methods",
+            "Interface declaration and implements",
+            "Multiple interface implementation",
+            "Interface inheritance",
+            "Default, static and private interface methods",
+            "Functional and marker interfaces",
+            "Abstract class vs interface",
+            "Packages, imports and static imports",
+            "private, default, protected and public",
+            "Classpath and naming conventions",
+          ],
+          note: "Program to an interface when you want calling code to depend on a contract rather than a concrete class.",
+          example: "interface Payable { double total(); }",
+          pdf: "./java%20pdf/Java_Abstract_Interfaces_Packages_Access_Modifie.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🔤",
+          title: "Strings, Object & Wrapper Classes",
+          desc: "Immutability, equality and conversions",
+          topics: [
+            "String immutability and pool",
+            "Literal vs new String()",
+            "== vs equals()",
+            "String methods and concatenation",
+            "StringBuilder vs StringBuffer",
+            "Object methods: toString, equals, hashCode, getClass",
+            "Wrapper classes",
+            "Autoboxing and unboxing",
+            "parseXxx() and valueOf()",
+            "Math, System and Runtime",
+          ],
+          note: "Use equals() for value comparison of strings. Use StringBuilder for repeated concatenation in loops.",
+          example:
+            'String name = "Java";\\nSystem.out.println(name.equals("Java"));',
+          pdf: "./java%20pdf/Strings.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "⚠️",
+          title: "Exceptions & Assertions",
+          desc: "Handle errors and release resources safely",
+          topics: [
+            "Error vs Exception and hierarchy",
+            "Checked vs unchecked exceptions",
+            "try, catch and finally",
+            "Multiple and nested catch",
+            "throw and throws",
+            "Propagation and custom exceptions",
+            "try-with-resources",
+            "Multi-catch and suppressed exceptions",
+            "assert statement and assertion messages",
+            "Assertions vs exception handling",
+            "Exception-handling best practices",
+          ],
+          note: "Catch exceptions you can handle meaningfully. Do not silently swallow errors or expose secrets in messages.",
+          example:
+            "try (var in = Files.newBufferedReader(path)) {\\n  System.out.println(in.readLine());\\n}",
+          pdf: "./java%20pdf/Java_Exception_Handling.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🧩",
+          title: "Nested Classes, Enums & Generics",
+          desc: "Modern types and type-safe reuse",
+          topics: [
+            "Member inner and static nested classes",
+            "Method-local and anonymous classes",
+            "Outer members, callbacks and this",
+            "Enum constants, fields and constructors",
+            "values(), valueOf(), EnumSet and EnumMap",
+            "Records and sealed types overview",
+            "Generic classes, methods and interfaces",
+            "Bounds and wildcards",
+            "Type erasure and restrictions",
+            "PECS principle",
+          ],
+          note: "Generics catch many type errors at compile time. PECS: producer extends, consumer super.",
+          example: "List<? extends Number> values;",
+          pdf: "./java%20pdf/Java_Inner_Classes_Enums_Records.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "📦",
+          title: "Collections Framework",
+          desc: "List, Set, Queue, Deque and Map",
+          topics: [
+            "Collection hierarchy, Iterable and Iterator",
+            "Collection vs Collections",
+            "ArrayList, LinkedList, Vector and Stack",
+            "HashSet, LinkedHashSet and TreeSet",
+            "Queue, PriorityQueue, Deque and ArrayDeque",
+            "Map, HashMap, LinkedHashMap and Hashtable",
+            "TreeMap, SortedMap and NavigableMap",
+            "ConcurrentHashMap, BlockingQueue and copy-on-write",
+            "Comparable vs Comparator",
+            "equals/hashCode contract and hash collisions",
+            "Fail-fast behavior, immutable and unmodifiable collections",
+          ],
+          note: "Choose collections by required operations and ordering. ArrayDeque is usually preferable to legacy Stack.",
+          example:
+            'Map<String, Integer> counts = new HashMap<>();\\ncounts.merge("Java", 1, Integer::sum);',
+          pdf: "./java%20pdf/Java_Collections_Framework.pdf",
+        },
+        {
+          track: "Core Java",
+          icon: "🧵",
+          title: "Multithreading & Concurrency",
+          desc: "Threads, locks, executors and async tasks",
+          topics: [
+            "Process vs thread and thread lifecycle",
+            "Thread and Runnable",
+            "start() vs run(), sleep(), join()",
+            "Daemon threads, interrupts and priorities",
+            "synchronized, monitors and race conditions",
+            "wait(), notify() and notifyAll()",
+            "Deadlock, starvation and livelock",
+            "ExecutorService and thread pools",
+            "Callable, Future and CompletableFuture",
+            "ReentrantLock, ReadWriteLock and Condition",
+            "Semaphore, CountDownLatch and CyclicBarrier",
+            "Atomic classes and CAS",
+            "ForkJoinPool and parallel streams",
+            "Java 21 virtual threads",
+          ],
+          note: "Shared mutable state needs a concurrency strategy. Prefer higher-level executors to manually managing many threads.",
+          example:
+            'ExecutorService pool = Executors.newFixedThreadPool(4);\\npool.submit(() -> System.out.println("Task"));\\npool.shutdown();',
+        },
+        {
+          track: "Core Java",
+          icon: "📁",
+          title: "Java I/O, NIO & Serialization",
+          desc: "Streams, files, paths and object data",
+          topics: [
+            "File and directory operations",
+            "Byte streams: InputStream and OutputStream",
+            "Character streams: Reader and Writer",
+            "Buffered I/O and PrintWriter",
+            "Data streams, Console and Scanner",
+            "Serializable, Object streams and serialVersionUID",
+            "transient, static fields and inheritance",
+            "Path, Paths and Files APIs",
+            "Read/write, copy, move, delete and traversal",
+            "Channels, buffers, ByteBuffer and WatchService",
+          ],
+          note: "Use try-with-resources for closeable resources. Validate file paths and handle I/O exceptions.",
+          example:
+            'Path path = Path.of("notes.txt");\\nFiles.writeString(path, "Hello Java");',
+        },
+        {
+          track: "Core Java",
+          icon: "🌐",
+          title: "Regex, Networking & Date/Time",
+          desc: "Patterns, sockets, locales and time APIs",
+          topics: [
+            "Pattern, Matcher and regex syntax",
+            "Character classes, quantifiers, anchors and groups",
+            "find(), matches(), replaceAll() and split()",
+            "Input validation patterns",
+            "URL, URI, URLConnection and InetAddress",
+            "Socket and ServerSocket",
+            "TCP vs UDP concepts",
+            "LocalDate, LocalTime and LocalDateTime",
+            "Instant, ZonedDateTime and ZoneId",
+            "Period, Duration and DateTimeFormatter",
+            "Locale, ResourceBundle, UTF-8 and internationalization",
+          ],
+          note: "Use java.time for new date/time code. Regex validates formats but does not replace business-rule validation.",
+          example:
+            "LocalDate today = LocalDate.now();\\nSystem.out.println(today.format(DateTimeFormatter.ISO_DATE));",
+        },
+        {
+          track: "Core Java",
+          icon: "⚙️",
+          title: "JVM, Garbage Collection & Java 8–21",
+          desc: "Runtime internals and modern language features",
+          topics: [
+            "Class loader, verifier, execution engine and JNI",
+            "Heap, stack, metaspace, PC register and native stack",
+            "Interpreter and JIT compiler",
+            "GC roots, reachability and eligible objects",
+            "Young/old generations and GC collectors",
+            "Memory leaks and OutOfMemoryError awareness",
+            "Java 8 lambdas, functional interfaces and method references",
+            "Streams, collectors, Optional and Date/Time API",
+            "Java 9 modules, JShell and collection factories",
+            "Java 10 var; Java 11 String, Files and HTTP APIs",
+            "Java 12–16 switch expressions, text blocks, records and pattern matching",
+            "Java 17 sealed types; Java 21 virtual threads, record patterns and sequenced collections",
+            "Clean code, JavaDoc, debugging, logging and tests",
+          ],
+          note: "Know which Java release introduced a feature and verify whether it is final or preview before using it.",
+          example:
+            'List<String> names = List.of("Asha", "Ravi");\\nnames.stream().filter(n -> n.startsWith("A")).forEach(System.out::println);',
+        },
+        {
+          track: "DSA with Java",
+          icon: "🧠",
+          title: "DSA Foundations & Complexity",
+          desc: "Correctness, Big-O and problem-solving workflow",
+          topics: [
+            "Data structures, algorithms and ADTs",
+            "Linear vs non-linear; static vs dynamic structures",
+            "Input/output, constraints and brute force",
+            "Correctness, invariants, edge cases and overflow",
+            "Time and space complexity",
+            "Big-O, Big-Theta and Big-Omega",
+            "Amortized and auxiliary-space analysis",
+            "Dry runs, debugging and clean solutions",
+          ],
+          note: "Write down input constraints first. Estimate complexity before choosing an algorithm.",
+          example:
+            "// Always state time and space complexity for each solution.",
+        },
+        {
+          track: "DSA with Java",
+          icon: "🔎",
+          title: "Arrays, Strings & Problem Patterns",
+          desc: "Essential coding interview patterns",
+          topics: [
+            "Array traversal, min/max, second-largest and rotations",
+            "Frequency counts, missing/duplicate numbers and intersections",
+            "Prefix/suffix sums and range queries",
+            "Subarrays, subsequences and Kadane’s algorithm",
+            "Matrix transpose, rotation, spiral and grid search",
+            "String palindrome, anagram and frequency maps",
+            "Longest common prefix and substring patterns",
+            "Two pointers and sliding window",
+            "Monotonic stack/deque patterns",
+            "Bit manipulation, GCD/LCM, sieve and fast exponentiation",
+          ],
+          note: "For every problem: brute force → optimize → dry run → edge cases → complexity.",
+          example:
+            "// Pattern: two pointers often reduce nested loops on sorted arrays.",
+        },
+        {
+          track: "DSA with Java",
+          icon: "🔗",
+          title: "Linked Lists, Stacks & Queues",
+          desc: "Linear structures and classic problems",
+          topics: [
+            "Singly, doubly and circular linked lists",
+            "Create, traverse, insert, delete and reverse",
+            "Slow/fast pointers and cycle detection",
+            "Merge sorted lists and nth node from end",
+            "Stack ADT, LIFO, push/pop/peek and underflow",
+            "Balanced parentheses, next greater element and stock span",
+            "Postfix/prefix evaluation and infix conversion",
+            "Queue FIFO, circular queue and deque",
+            "Queue using stacks; stack using queues",
+            "BFS foundations and sliding-window maximum",
+          ],
+          note: "Pointer updates and null checks are the common sources of linked-list bugs.",
+          example:
+            "Deque<Integer> stack = new ArrayDeque<>();\\nstack.push(10); int top = stack.pop();",
+        },
+        {
+          track: "DSA with Java",
+          icon: "↕️",
+          title: "Searching, Sorting, Hashing & Heaps",
+          desc: "Algorithms and data structure internals",
+          topics: [
+            "Linear and binary search; lower/upper bounds",
+            "Rotated arrays, peak element and binary search on answer",
+            "Bubble, selection and insertion sort",
+            "Merge sort, quicksort, heapsort and counting sort",
+            "Stable vs unstable and in-place vs out-of-place",
+            "Hash functions, buckets, collisions and load factor",
+            "HashMap/HashSet internals and equals/hashCode",
+            "Two-sum, longest consecutive sequence and subarray sum K",
+            "Min/max heap and Java PriorityQueue",
+            "Kth largest, top-K, merge K lists and running median",
+          ],
+          note: "Binary search needs a monotonic condition or sorted search space. Avoid overflow in midpoint calculation.",
+          example: "int mid = left + (right - left) / 2;",
+        },
+        {
+          track: "DSA with Java",
+          icon: "🌲",
+          title: "Trees, Graphs, Greedy & Dynamic Programming",
+          desc: "Advanced algorithmic thinking",
+          topics: [
+            "Tree terminology, binary trees and BST operations",
+            "Preorder, inorder, postorder and level-order traversal",
+            "Height, diameter, balance, LCA and path sum",
+            "Graph representations, vertices and edges",
+            "BFS, DFS, components and cycle detection",
+            "Topological sort, Dijkstra and Bellman–Ford awareness",
+            "Kruskal, Prim and Union-Find",
+            "Greedy choice, interval scheduling and fractional knapsack",
+            "DP states, transitions, base cases and tabulation",
+            "Fibonacci, knapsack, coin change, LCS, LIS and edit distance",
+            "Backtracking: subsets, permutations, N-Queens and Sudoku",
+            "Trie, DSU, interview practice and mini-projects",
+          ],
+          note: "For DP, define the state and transition in plain language before writing code.",
+          example:
+            "// DP checklist: state → transition → base case → order → answer.",
+        },
+        {
+          track: "SQL & Databases",
+          icon: "🗄️",
+          title: "Database Fundamentals & SQL",
+          desc: "Relational concepts, querying and optimization",
+          topics: [
+            "Database, DBMS, RDBMS, schemas and metadata",
+            "Tables, rows, columns, relations, tuples and attributes",
+            "Keys, relationships and referential integrity",
+            "DDL, DML, DQL, DCL and TCL",
+            "CREATE, ALTER, DROP, TRUNCATE, INSERT, UPDATE, DELETE",
+            "SELECT, DISTINCT, aliases, expressions and WHERE",
+            "AND, OR, NOT, BETWEEN, IN, LIKE and wildcards",
+            "ORDER BY, LIMIT, FETCH, OFFSET and pagination",
+            "Constraints and primary, foreign, candidate and composite keys",
+            "Aggregate, string, numeric and date functions",
+            "GROUP BY, HAVING and joins: inner/left/right/full",
+            "Subqueries, CTEs, views, set operators and window functions",
+            "Transactions, ACID, isolation, locks and deadlocks",
+            "Normalization, indexes, EXPLAIN and query optimization",
+            "MySQL and Oracle differences; SQL interview practice",
+          ],
+          note: "Use WHERE to filter rows before grouping and HAVING to filter groups. Learn each SQL dialect's syntax.",
+          example:
+            "SELECT department, COUNT(*)\\nFROM employees\\nGROUP BY department;",
+        },
+        {
+          track: "NoSQL & Caching",
+          icon: "⚡",
+          title: "MongoDB, Redis & Data Modeling",
+          desc: "Document databases and caching strategies",
+          topics: [
+            "SQL vs NoSQL and use cases",
+            "MongoDB documents, collections and BSON",
+            "CRUD queries, filters, projections and updates",
+            "Indexes, compound indexes and explain plans",
+            "Schema design, embedding vs referencing",
+            "Aggregation pipeline",
+            "Transactions and data validation",
+            "Redis strings, hashes, lists, sets and sorted sets",
+            "TTL, cache-aside, invalidation and cache stampede",
+            "Spring integration and ConcurrentHashMap comparison",
+          ],
+          note: "Choose storage based on query patterns, consistency needs and operational constraints.",
+          example:
+            "// Design a document around how the application reads and updates it.",
+        },
+        {
+          track: "Design & Patterns",
+          icon: "🧭",
+          title: "SOLID & Design Patterns",
+          desc: "Maintainable object-oriented design",
+          topics: [
+            "Single Responsibility and Open/Closed principles",
+            "Liskov Substitution and Interface Segregation",
+            "Dependency Inversion",
+            "Composition over inheritance",
+            "Factory, Abstract Factory and Builder",
+            "Singleton trade-offs",
+            "Strategy, Observer, Adapter and Decorator",
+            "Template Method, Repository and MVC",
+            "UML basics, cohesion, coupling and refactoring",
+          ],
+          note: "Use a pattern to solve a real design pressure, not just to add more classes.",
+          example:
+            "// Depend on interfaces; inject implementations from the outside.",
+        },
+        {
+          track: "Advanced Java",
+          icon: "🔌",
+          title: "JDBC, Servlets & JSP",
+          desc: "Traditional Java web and database foundations",
+          topics: [
+            "JDBC drivers and connection lifecycle",
+            "Connection, PreparedStatement and ResultSet",
+            "CRUD operations and transactions",
+            "SQL injection prevention with prepared statements",
+            "Servlet lifecycle and request/response",
+            "GET vs POST and form handling",
+            "Sessions, cookies and filters",
+            "JSP, EL, JSTL and MVC separation",
+            "Connection pooling and resource management",
+          ],
+          note: "Never concatenate untrusted input into SQL. Always close database resources and avoid credentials in source code.",
+          example: "// Use PreparedStatement with ? parameters for user input.",
+        },
+        {
+          track: "Spring Framework",
+          icon: "🌱",
+          title: "Spring Framework Core & MVC",
+          desc: "IoC, dependency injection and web architecture",
+          topics: [
+            "Spring ecosystem and application context",
+            "IoC and dependency injection",
+            "Bean lifecycle, scopes and configuration",
+            "Annotations: Component, Service, Repository and Controller",
+            "Java, annotation and XML configuration",
+            "AOP concepts, pointcuts and advice",
+            "Spring MVC request flow and controllers",
+            "Model, view, validation and exception handling",
+            "Transactions and propagation/isolation",
+            "Profiles, properties and external configuration",
+          ],
+          note: "Constructor injection makes dependencies explicit and simplifies unit testing.",
+          example:
+            '@Service\\nclass GreetingService {\\n  String greet() { return "Hello"; }\\n}',
+        },
+        {
+          track: "Spring Boot",
+          icon: "🚀",
+          title: "Spring Boot & REST APIs",
+          desc: "Build and operate production-oriented services",
+          topics: [
+            "Auto-configuration, starters and project structure",
+            "application.properties/yml and profiles",
+            "REST controllers, mappings and status codes",
+            "DTOs, validation and global exception handling",
+            "CRUD services and repository layers",
+            "Pagination, sorting, filtering and API versioning",
+            "OpenAPI/Swagger and Postman",
+            "CORS and HTTP fundamentals",
+            "Actuator, health checks, logs and metrics",
+            "Configuration secrets and production readiness",
+          ],
+          note: "Return meaningful HTTP status codes and keep API DTOs separate from persistence entities.",
+          example:
+            '@GetMapping("/api/hello")\\nString hello() { return "Hello"; }',
+        },
+        {
+          track: "Hibernate & JPA",
+          icon: "🧬",
+          title: "Hibernate, JPA & Persistence",
+          desc: "ORM, relationships, transactions and performance",
+          topics: [
+            "ORM and entity lifecycle",
+            "Entity mapping, IDs and generated keys",
+            "One-to-one, one-to-many, many-to-one and many-to-many",
+            "Fetch types and cascade behavior",
+            "JPQL, derived queries and native queries",
+            "Persistence context and dirty checking",
+            "First- and second-level cache",
+            "Transactions and isolation",
+            "Optimistic/pessimistic locking and @Version",
+            "N+1 queries, batching and query performance",
+          ],
+          note: "Understand when a query loads data; avoid accidentally fetching huge object graphs.",
+          example:
+            "// Use @Transactional around a business operation requiring atomic changes.",
+        },
+        {
+          track: "Spring Security",
+          icon: "🔐",
+          title: "Authentication & Application Security",
+          desc: "Secure APIs, sessions and tokens",
+          topics: [
+            "Authentication vs authorization",
+            "Security filter chain and password hashing",
+            "Role-based access control",
+            "Session and cookie security",
+            "JWT structure, expiry and validation",
+            "OAuth2 and OpenID Connect concepts",
+            "CSRF, CORS, XSS and SQL injection",
+            "Secrets management and least privilege",
+            "Method security and access tests",
+            "Error responses without leaking sensitive details",
+          ],
+          note: "Hash passwords with a suitable password-hashing algorithm; never store plain-text passwords.",
+          example:
+            "// Enforce authorization on the server, not only by hiding UI buttons.",
+        },
+        {
+          track: "Microservices & Cloud",
+          icon: "☁️",
+          title: "Spring Cloud & Microservices",
+          desc: "Distributed systems and resilient services",
+          topics: [
+            "Monolith vs microservices trade-offs",
+            "Service discovery with Eureka",
+            "API Gateway and routing",
+            "OpenFeign and load balancing",
+            "Config Server and external configuration",
+            "Timeouts, retries, circuit breakers and bulkheads",
+            "Resilience and fallback design",
+            "Distributed tracing, metrics and logs",
+            "Synchronous vs asynchronous communication",
+            "Database per service and eventual consistency",
+            "Deployment, health checks and service security",
+          ],
+          note: "Retries need limits and idempotency; an unbounded retry can amplify an outage.",
+          example:
+            "// Design timeouts and failure handling at every network boundary.",
+        },
+        {
+          track: "Messaging",
+          icon: "📨",
+          title: "Kafka, RabbitMQ & Messaging",
+          desc: "Events, queues and reliable delivery",
+          topics: [
+            "Messaging basics, queues and topics",
+            "Kafka brokers, topics, partitions and offsets",
+            "Producers, consumers and consumer groups",
+            "Ordering, delivery semantics and idempotency",
+            "Retries, dead-letter queues and replay",
+            "RabbitMQ exchanges, queues, bindings and routing keys",
+            "ACK/NACK, redelivery and durability",
+            "JMS and ActiveMQ awareness",
+            "Spring Kafka / AMQP integration",
+            "Schema evolution, monitoring and secure credentials",
+          ],
+          note: "Plan for duplicate delivery and consumer retries. A message handler should be idempotent where possible.",
+          example:
+            "// Treat event delivery as a distributed-systems concern, not just a send() call.",
+        },
+        {
+          track: "Testing & Quality",
+          icon: "🧪",
+          title: "Testing & Code Quality",
+          desc: "Unit, integration, API and quality checks",
+          topics: [
+            "Test pyramid and test doubles",
+            "JUnit 5 lifecycle, assertions and parameterized tests",
+            "Mockito stubbing, verification and captors",
+            "TestNG awareness",
+            "AssertJ and Hamcrest",
+            "Spring Boot tests and MockMvc",
+            "REST Assured API tests",
+            "Testcontainers and WireMock",
+            "JaCoCo coverage, SonarQube and SonarLint",
+            "CI test reports and debugging flaky tests",
+          ],
+          note: "Test behavior and edge cases, not just whether a method was called.",
+          example:
+            "// Arrange → Act → Assert is a useful structure for small tests.",
+        },
+        {
+          track: "DevOps & Linux",
+          icon: "🐳",
+          title: "Linux, Docker, Jenkins & CI/CD",
+          desc: "Ship and troubleshoot applications",
+          topics: [
+            "Linux filesystem, permissions, processes and logs",
+            "Shell basics, environment variables and networking",
+            "Docker images, containers, volumes and networks",
+            "Dockerfile and multi-stage builds",
+            "Docker Compose and local service stacks",
+            "Jenkins pipelines and automated build/test",
+            "CI/CD stages, artifacts and deployment",
+            "Monitoring, health checks and troubleshooting",
+            "Cloud deployment fundamentals",
+            "AWS and Azure certification awareness",
+          ],
+          note: "Make builds repeatable. Keep secrets outside source control and use environment-specific configuration.",
+          example: "mvn clean test package\\ndocker build -t java-app:1.0 .",
+        },
+        {
+          track: "Git & Tools",
+          icon: "🐙",
+          title: "Git, GitHub, SVN & Developer Tools",
+          desc: "Collaboration, branches and API tooling",
+          topics: [
+            "Git init, clone, status, add, commit and log",
+            "Branches, merge, rebase and conflict resolution",
+            "Remote repositories, push, pull and fetch",
+            "Pull requests, reviews, tags and releases",
+            ".gitignore and secret hygiene",
+            "SVN fundamentals and comparison",
+            "Postman and cURL for API testing",
+            "OpenAPI/Swagger UI documentation",
+            "Eclipse, STS, VS Code and browser DevTools",
+            "Debugging, code formatting and team workflow",
+          ],
+          note: "Commit small, meaningful changes. Review diffs and never commit API keys or passwords.",
+          example: 'git status\\ngit add .\\ngit commit -m "Add student API"',
+        },
+        {
+          track: "Frontend",
+          icon: "🎨",
+          title: "HTML, CSS, Bootstrap & Accessibility",
+          desc: "Build responsive, usable web interfaces",
+          topics: [
+            "Browser, HTTP and web foundations",
+            "HTML5 structure, semantic tags and forms",
+            "CSS selectors, box model, flexbox and grid",
+            "Responsive design and media queries",
+            "Bootstrap grid, utilities and components",
+            "Accessibility, keyboard navigation and labels",
+            "UI basics, contrast and reusable components",
+            "Form validation and browser rendering",
+            "DevTools and responsive testing",
+          ],
+          note: "Use semantic HTML first. Accessibility helps keyboard users and improves the structure for everyone.",
+          example: '<button type="button">Save changes</button>',
+        },
+        {
+          track: "Frontend",
+          icon: "🟨",
+          title: "JavaScript, AJAX & TypeScript",
+          desc: "Modern browser programming and async requests",
+          topics: [
+            "Variables, types, operators and control flow",
+            "Functions, scope, closures and objects",
+            "Arrays, destructuring, spread and modules",
+            "DOM selection, events and forms",
+            "Promises, async/await and error handling",
+            "Fetch API, JSON and HTTP status codes",
+            "XHR, cancellation and CORS",
+            "jQuery selectors, events and AJAX",
+            "TypeScript types, interfaces and generics",
+            "Compiler configuration and React usage",
+            "NaN, strict mode, debugging and browser APIs",
+          ],
+          note: "Always handle failed network requests and loading states; an HTTP 404 does not automatically reject fetch().",
+          example:
+            'const response = await fetch("/api/students");\\nif (!response.ok) throw new Error("Request failed");',
+        },
+        {
+          track: "React",
+          icon: "⚛️",
+          title: "React & Frontend Application Architecture",
+          desc: "Components, hooks, routing and APIs",
+          topics: [
+            "Components, JSX, props and state",
+            "Conditional rendering and lists/keys",
+            "Events and controlled forms",
+            "useState, useEffect, useMemo and useCallback",
+            "Custom hooks and component composition",
+            "Routing and navigation",
+            "State management patterns",
+            "REST API integration and loading/error states",
+            "Authentication UI and protected routes",
+            "Testing, accessibility and performance",
+            "Build, environment variables and deployment",
+          ],
+          note: "Keep state minimal and derived data computed where appropriate. Effects are for synchronizing with external systems.",
+          example:
+            "function Welcome({ name }) {\\n return <h1>Hello, {name}</h1>;\\n}",
+        },
+        {
+          track: "Angular",
+          icon: "🅰️",
+          title: "Angular Fundamentals",
+          desc: "TypeScript, services, routing and forms",
+          topics: [
+            "Angular architecture and CLI",
+            "Components and templates",
+            "Standalone components and modules",
+            "Services and dependency injection",
+            "RxJS observables",
+            "Routing and route guards",
+            "Template-driven and reactive forms",
+            "HttpClient and API integration",
+            "Testing, build and deployment",
+            "Integrating Angular with Spring Boot",
+          ],
+          note: "Keep UI components focused and move reusable data logic into services.",
+          example: "// Learn components → services → routing → forms → HTTP.",
+        },
+        {
+          track: "Environment & Cloud",
+          icon: "🛠️",
+          title: "Environment Setup & Certifications",
+          desc: "JDK, Node/npm, cloud fundamentals",
+          topics: [
+            "Install JDK and configure JAVA_HOME",
+            "Verify java and javac from terminal",
+            "Install Node.js and npm",
+            "package.json, npm scripts and dependencies",
+            "Vite build and dependency troubleshooting",
+            "AWS cloud certification awareness",
+            "Microsoft Azure certification awareness",
+            "Environment variables and safe local configuration",
+          ],
+          note: "Document versions and setup steps so the project can be recreated on another machine.",
+          example: "java -version\\njavac -version\\nnode -v\\nnpm -v",
+        },
+        {
+          track: "AI & Modern Development",
+          icon: "🤖",
+          title: "AI/ML, Generative AI & AI-assisted Coding",
+          desc: "Responsible AI, ML basics, RAG and agents",
+          topics: [
+            "AI foundations, agents, search and reasoning",
+            "Ethics, bias, privacy and responsible AI",
+            "Statistics, probability, vectors and matrices",
+            "Python, NumPy, pandas and visualization",
+            "Data cleaning, missing values and outliers",
+            "Feature engineering and ML workflow",
+            "Train/validation/test split and evaluation",
+            "Generative AI concepts and prompt design",
+            "Embeddings, vector search and RAG",
+            "Agentic AI concepts and tool use",
+            "Cursor AI / IDE assistance and code review",
+            "Cloud AI integration and secure handling of data",
+          ],
+          note: "Treat AI-generated code as a draft: inspect it, test it, check dependencies and never paste secrets into prompts.",
+          example:
+            "// Verify AI suggestions with docs, tests and your own reasoning.",
+        },
+      ];
+      const trackInfo = [
+        [
+          "Core Java",
+          "☕",
+          "Build a strong language foundation, OOP, collections, concurrency and modern Java.",
+          "18 modules",
+        ],
+        [
+          "DSA with Java",
+          "🧠",
+          "Solve coding problems with patterns, complexity analysis and interview practice.",
+          "4 modules",
+        ],
+        [
+          "SQL & Databases",
+          "🗄️",
+          "Query relational data, model schemas, tune indexes and understand transactions.",
+          "2 modules",
+        ],
+        [
+          "NoSQL & Caching",
+          "⚡",
+          "Learn MongoDB, Redis and practical data access patterns.",
+          "1 module",
+        ],
+        [
+          "Spring Framework",
+          "🌱",
+          "Learn the Spring container, dependency injection, MVC and AOP.",
+          "1 module",
+        ],
+        [
+          "Spring Boot",
+          "🚀",
+          "Build REST APIs with validation, persistence, security and monitoring.",
+          "1 module",
+        ],
+        [
+          "Frontend",
+          "🎨",
+          "Create responsive accessible interfaces with HTML, CSS and JavaScript.",
+          "2 modules",
+        ],
+        [
+          "DevOps & Linux",
+          "🐳",
+          "Version, test, package and deploy real applications.",
+          "1 module",
+        ],
+        [
+          "AI & Modern Development",
+          "🤖",
+          "Explore ML foundations, RAG, generative AI and responsible tools.",
+          "1 module",
+        ],
+      ];
+      const videosFor = (t) =>
+        "https://www.youtube.com/results?search_query=" +
+        encodeURIComponent(t + " tutorial full course");
+      const escapeHtml = (s) =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const saved = () => {
+        try {
+          return JSON.parse(localStorage.getItem("codecraft-done") || "{}");
+        } catch (e) {
+          return {};
+        }
+      };
+      let done = saved();
+      const trackGrid = document.getElementById("trackGrid"),
+        topicList = document.getElementById("topicList");
+      const tracks = [...new Set(modules.map((m) => m.track))];
+      trackInfo.forEach(([name, icon, desc, count]) => {
+        const total = modules.filter((m) => m.track === name).length;
+        trackGrid.insertAdjacentHTML(
+          "beforeend",
+          `<article class="track"><div class="track-icon">${icon}</div><h3>${name}</h3><p>${desc}</p><div class="track-meta"><span>${total || count} learning modules</span><span>${Math.round((modules.filter((m, i) => m.track === name && done[i]).length / Math.max(1, total)) * 100)}%</span></div><div class="progress-line"><span style="width:${Math.round((modules.filter((m, i) => m.track === name && done[i]).length / Math.max(1, total)) * 100)}%"></span></div><a class="tiny-link" href="#curriculum" onclick="setTrack('${name.replace(/'/g, "\\'")}')">Explore track ↗</a></article>`,
+        );
+      });
+      const filter = document.getElementById("trackFilter");
+      tracks.forEach((t) =>
+        filter.insertAdjacentHTML(
+          "beforeend",
+          `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`,
+        ),
+      );
+      function render() {
+        const q = document
+            .getElementById("searchInput")
+            .value.toLowerCase()
+            .trim(),
+          tr = filter.value,
+          st = document.getElementById("statusFilter").value;
+        topicList.innerHTML = "";
+        let visible = 0;
+        modules.forEach((m, i) => {
+          const isDone = !!done[i],
+            searchable = (
+              m.title +
+              " " +
+              m.track +
+              " " +
+              m.desc +
+              " " +
+              m.topics.join(" ")
+            ).toLowerCase();
+          if (
+            (q && !searchable.includes(q)) ||
+            (tr !== "all" && m.track !== tr) ||
+            (st === "done" && !isDone) ||
+            (st === "todo" && isDone)
+          )
+            return;
+          visible++;
+          const video = videosFor(m.title);
+
+          topicList.insertAdjacentHTML(
+            "beforeend",
+            `
+  <details class="topic" ${q && searchable.includes(q) ? "open" : ""}>
+    <summary>
+      <span class="num">${String(i + 1).padStart(2, "0")}</span>
+
+      <div>
+        <h3>${escapeHtml(m.title)}</h3>
+        <p>${escapeHtml(m.track)} · ${escapeHtml(m.desc)}</p>
+      </div>
+
+      <span class="chev">⌄</span>
+    </summary>
+
+    <div class="topic-body">
+
+      <h4>TOPIC CHECKLIST</h4>
+      <ul>
+        ${m.topics.map((x) => `<li>${escapeHtml(x)}</li>`).join("")}
+      </ul>
+
+      <h4>QUICK REVISION NOTE</h4>
+      <p style="font-size:12px;color:var(--muted)">
+        ${escapeHtml(m.note)}
+      </p>
+
+      <h4>CODE / PRACTICE IDEA</h4>
+      <pre style="white-space:pre-wrap;background:#080d1a;color:#b9f4dd;padding:12px;border-radius:10px;font-size:11px;overflow:auto">${escapeHtml(
+        m.example.replace(/\\n/g, "\n"),
+      )}</pre>
+
+      <div class="topic-links">
+
+        <a class="pill-link"
+           href="${video}"
+           target="_blank"
+           rel="noreferrer">
+          ▶ YouTube lessons
+        </a>
+
+        <a class="pill-link"
+           href="https://www.google.com/search?q=${encodeURIComponent(m.title + " handwritten notes pdf")}"
+           target="_blank"
+           rel="noreferrer">
+          ✎ Find handwritten notes
+        </a>
+
+        <a class="pill-link"
+           href="https://www.google.com/search?q=${encodeURIComponent(m.title + " official documentation")}"
+           target="_blank"
+           rel="noreferrer">
+          ↗ Read documentation
+        </a>
+           ${
+             m.pdf
+               ? `
+          <a class="pill-link" href="${m.pdf}" download>
+          ⬇ Download PDF
+              </a>
+            `
+               : ""
+           }
+      </div>
+
+      <label class="done-row">
+        <input
+          type="checkbox"
+          data-done="${i}"
+          ${isDone ? "checked" : ""}
+        >
+        Mark this module complete
+      </label>
+
+    </div>
+  </details>
+  `,
+          );
+        });
+        if (!visible)
+          topicList.innerHTML =
+            '<div class="empty">No modules found. Try a shorter search or change the filters.</div>';
+        topicList.querySelectorAll("[data-done]").forEach((box) =>
+          box.addEventListener("change", async (e) => {
+            const id = e.target.dataset.done;
+            done[id] = e.target.checked;
+            localStorage.setItem("codecraft-done", JSON.stringify(done));
+            renderStats();
+            renderTracks();
+            try {
+              const r = await fetch("/api/progress/" + id, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ completed: e.target.checked }),
+              });
+              if (!r.ok) throw new Error();
+            } catch {
+              e.target.checked = !e.target.checked;
+              done[id] = e.target.checked;
+              localStorage.setItem("codecraft-done", JSON.stringify(done));
+              render();
+            }
+          }),
+        );
+        renderStats();
+        renderTracks();
+      }
+      function renderStats() {
+        document.getElementById("doneCount").textContent = Object.keys(
+          done,
+        ).filter((k) => done[k]).length;
+        document.getElementById("totalCount").textContent = modules.length;
+      }
+      function renderTracks() {
+        [...trackGrid.children].forEach((card, i) => {
+          const name = trackInfo[i][0],
+            total = modules.filter((m) => m.track === name).length,
+            complete = modules.filter(
+              (m, j) => m.track === name && done[j],
+            ).length;
+          const pct = Math.round((complete / Math.max(1, total)) * 100);
+          const meta = card.querySelector(".track-meta");
+          if (meta)
+            meta.innerHTML = `<span>${total} learning modules</span><span>${pct}%</span>`;
+          const bar = card.querySelector(".progress-line span");
+          if (bar) bar.style.width = pct + "%";
+        });
+      }
+      function setTrack(name) {
+        filter.value = name;
+        document.getElementById("searchInput").value = "";
+        render();
+        document
+          .getElementById("curriculum")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+      document.getElementById("searchInput").addEventListener("input", render);
+      filter.addEventListener("change", render);
+      document
+        .getElementById("statusFilter")
+        .addEventListener("change", render);
+      document.querySelectorAll("[data-scroll]").forEach((b) =>
+        b.addEventListener("click", () => {
+          document
+            .getElementById(b.dataset.scroll)
+            .scrollIntoView({ behavior: "smooth" });
+          document
+            .querySelectorAll("[data-scroll]")
+            .forEach((x) => x.classList.toggle("active", x === b));
+          document.getElementById("crumb").textContent = b.textContent.trim();
+        }),
+      );
+      document.getElementById("themeBtn").addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        localStorage.setItem(
+          "codecraft-theme",
+          document.body.classList.contains("light") ? "light" : "dark",
+        );
+      });
+      if (localStorage.getItem("codecraft-theme") === "light")
+        document.body.classList.add("light");
+      render();
+      fetch("/api/auth/me")
+        .then((r) => {
+          if (!r.ok) location.replace("/login");
+          return r.json();
+        })
+        .then((d) => {
+          const el = document.getElementById("userBadge");
+          if (el) el.textContent = d.user.name;
+        })
+        .catch(() => location.replace("/login"));
+      fetch("/api/progress")
+        .then((r) => {
+          if (!r.ok) throw new Error();
+          return r.json();
+        })
+        .then((d) => {
+          d.progress.forEach((p) => {
+            done[p.moduleId] = !!p.completed;
+          });
+          localStorage.setItem("codecraft-done", JSON.stringify(done));
+          render();
+        })
+        .catch(() => {});
+      document
+        .getElementById("logoutBtn")
+        ?.addEventListener("click", async () => {
+          try {
+            await fetch("/api/auth/logout", { method: "POST" });
+          } finally {
+            location.replace("/login");
+          }
+        });
+    </script>
+  </body>
+</html>

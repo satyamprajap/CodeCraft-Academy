@@ -1,0 +1,19 @@
+{
+  "name": "codecraft-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CodeCraft full-stack Java learning portal with authentication and progress API",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0b1020" />
+    <title>Create account — CodeCraft Academy</title>
+    <link rel="stylesheet" href="/assets/auth.css" />
+  </head>
+  <body>
+    <div class="auth-wrap">
+      <section class="pitch">
+        <a class="brand" href="/register"
+          ><span class="logo">C</span
+          ><span
+            ><strong>CodeCraft Academy</strong
+            ><small>Full Stack Java Path</small></span
+          ></a
+        >
+        <div style="margin-top: clamp(35px, 8vh, 90px)">
+          <span class="eyebrow">Learn at your own pace</span>
+          <h1>
+            Start small.<br /><span class="gradient">Grow into a builder.</span>
+          </h1>
+          <p>
+            Create your account to track completed modules, revisit revision
+            notes and organize your full-stack development journey.
+          </p>
+          <div class="features">
+            <div class="feature">
+              <b>✓ Personalized progress</b
+              ><span>Your checklist belongs to you</span>
+            </div>
+            <div class="feature">
+              <b>✓ Practical curriculum</b><span>Java to deployment</span>
+            </div>
+            <div class="feature">
+              <b>✓ Project library</b><span>Ideas and starter guidance</span>
+            </div>
+            <div class="feature">
+              <b>✓ Responsive workspace</b
+              ><span>Desktop and mobile layouts</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <main class="auth-card">
+        <h2>Create your account</h2>
+        <p class="sub">A few details and you're ready to learn.</p>
+        <div id="message" class="message" role="alert"></div>
+        <form data-auth="register">
+          <div class="field">
+            <label for="name">Full name</label
+            ><input
+              id="name"
+              name="name"
+              autocomplete="name"
+              placeholder="Your name"
+              required
+              minlength="2"
+              maxlength="60"
+            />
+          </div>
+          <div class="field">
+            <label for="email">Email address</label
+            ><input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+              maxlength="254"
+            />
+          </div>
+          <div class="field">
+            <label for="password">Password</label
+            ><input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="At least 8 characters"
+              required
+              minlength="8"
+              maxlength="128"
+            />
+          </div>
+          <button class="submit" type="submit">Create account</button>
+        </form>
+        <p class="switch">
+          Already have an account? <a href="/login">Log in</a>
+        </p>
+        <p class="fine">
+          Use a unique password. Account data is stored by this app's backend.
+        </p>
+      </main>
+    </div>
+    <script src="/assets/auth.js"></script>
+  </body>
+</html>

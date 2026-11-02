@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>My Profile — CodeCraft Academy</title>
+    <link rel="stylesheet" href="/assets/pages.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="bar">
+        <a class="brand" href="/"
+          ><span class="logo">C</span><span>CodeCraft Academy</span></a
+        >
+        <nav class="links">
+          <a href="/">Overview</a><a href="/courses">Courses</a
+          ><a href="/notes">Notes</a><a href="/projects">Projects</a
+          ><a href="/profile">Profile</a><a href="#" id="logout">Log out</a>
+        </nav>
+      </header>
+      <section class="intro">
+        <small>Account</small>
+        <h1>My profile</h1>
+        <p>Account details and learning progress associated with your login.</p>
+      </section>
+      <section class="card">
+        <div class="profile">
+          <div class="avatar" id="avatar">C</div>
+          <div>
+            <h2 id="name">Loading profile…</h2>
+            <p class="muted" id="email"></p>
+            <p class="muted" id="created"></p>
+          </div>
+        </div>
+        <div class="callout">
+          <b>Your learning progress</b>
+          <p id="progress">Loading saved progress…</p>
+          <a class="tag" href="/">Continue learning ↗</a>
+        </div>
+        <button class="btn" id="logoutNow">Log out of CodeCraft</button>
+      </section>
+      <footer class="footer">
+        CodeCraft Academy · Full Stack Java learning workspace
+        <span id="sessionName"></span>
+      </footer>
+    </main>
+    <script>
+      fetch("/api/auth/me")
+        .then((r) => {
+          if (!r.ok) location.replace("/login");
+          return r.json();
+        })
+        .then((d) => {
+          document.getElementById("sessionName").textContent =
+            " · Signed in as " + d.user.name;
+        })
+        .catch(() => location.replace("/login"));
+      document.getElementById("logout").addEventListener("click", async (e) => {
+        e.preventDefault();
+        await fetch("/api/auth/logout", { method: "POST" });
+        location.replace("/login");
+      });
+    </script>
+    <script>
+      (async () => {
+        try {
+          const pair = await Promise.all([
+            fetch("/api/auth/me"),
+            fetch("/api/progress"),
+          ]);
+          if (!pair[0].ok || !pair[1].ok) throw new Error();
+          const user = (await pair[0].json()).user,
+            rows = (await pair[1].json()).progress;
+          document.getElementById("avatar").textContent = user.name
+            .slice(0, 1)
+            .toUpperCase();
+          document.getElementById("name").textContent = user.name;
+          document.getElementById("email").textContent = user.email;
+          document.getElementById("created").textContent =
+            "Account created: " + new Date(user.createdAt).toLocaleDateString();
+          document.getElementById("progress").textContent =
+            rows.filter((x) => x.completed).length +
+            " completed modules saved to your account.";
+        } catch {
+          location.replace("/login");
+        }
+      })();
+      document
+        .getElementById("logoutNow")
+        .addEventListener("click", async () => {
+          await fetch("/api/auth/logout", { method: "POST" });
+          location.replace("/login");
+        });
+    </script>
+  </body>
+</html>

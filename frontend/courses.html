@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Courses — CodeCraft Academy</title>
+
+    <link rel="stylesheet" href="/assets/pages.css">
+</head>
+
+<body>
+
+    <main class="shell">
+
+        <!-- Header / Navigation -->
+        <header class="bar">
+
+            <a class="brand" href="/">
+                <span class="logo">C</span>
+                <span>CodeCraft Academy</span>
+            </a>
+
+            <nav class="links">
+                <a href="/">Overview</a>
+                <a href="/courses">Courses</a>
+                <a href="/notes">Notes</a>
+                <a href="/projects">Projects</a>
+                <a href="/profile">Profile</a>
+                <a href="#" id="logout">Log out</a>
+            </nav>
+
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="intro">
+
+            <small>Learning paths</small>
+
+            <h1>Courses &amp; Curriculum</h1>
+
+            <p>
+                Follow a structured route from programming fundamentals
+                to full-stack applications and deployment.
+                Open the overview to search the complete topic checklist.
+            </p>
+
+            <!-- Recommended Learning Order -->
+            <div class="callout">
+
+                <b>Recommended Order</b>
+
+                <p>
+                    Core Java → DSA → SQL → JDBC/JPA →
+                    Spring Boot → REST APIs → React →
+                    Testing → Docker &amp; CI/CD.
+                </p>
+
+                <a class="tag" href="/">
+                    Open full curriculum ↗
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- Courses Grid -->
+        <section class="grid">
+
+            <!-- Core Java -->
+            <div class="card">
+
+                <span class="tag">FOUNDATION</span>
+
+                <h2>☕ Core Java</h2>
+
+                <p>
+                    Syntax, OOP, collections, generics, exceptions,
+                    streams, concurrency and JVM fundamentals.
+                </p>
+
+                <ul>
+                    <li>Practice small programs daily</li>
+                    <li>Learn object-oriented design</li>
+                    <li>Build a console application</li>
+                </ul>
+
+            </div>
+
+            <!-- DSA -->
+            <div class="card">
+
+                <span class="tag">INTERVIEWS</span>
+
+                <h2>🧠 DSA with Java</h2>
+
+                <p>
+                    Complexity analysis, arrays, strings, linked lists,
+                    trees, graphs and algorithm patterns.
+                </p>
+
+                <ul>
+                    <li>Explain time and space complexity</li>
+                    <li>Solve and revisit problems</li>
+                    <li>Write tests for edge cases</li>
+                </ul>
+
+            </div>
+
+            <!-- SQL and Databases -->
+            <div class="card">
+
+                <span class="tag">DATA</span>
+
+                <h2>🗄️ SQL &amp; Databases</h2>
+
+                <p>
+                    Relational modeling, joins, subqueries, indexes,
+                    transactions and database design.
+                </p>
+
+                <ul>
+                    <li>Practice query writing</li>
+                    <li>Understand normalization</li>
+                    <li>Review transaction isolation</li>
+                </ul>
+
+            </div>
+
+            <!-- Spring Boot -->
+            <div class="card">
+
+                <span class="tag">BACKEND</span>
+
+                <h2>🌱 Spring &amp; Spring Boot</h2>
+
+                <p>
+                    Dependency injection, REST controllers, validation,
+                    persistence, security and monitoring.
+                </p>
+
+                <ul>
+                    <li>Build REST endpoints</li>
+                    <li>Connect a database</li>
+                    <li>Write integration tests</li>
+                </ul>
+
+            </div>
+
+            <!-- Frontend -->
+            <div class="card">
+
+                <span class="tag">FRONTEND</span>
+
+                <h2>⚛️ HTML, CSS, JS &amp; React</h2>
+
+                <p>
+                    Responsive layout, accessibility, components,
+                    state, routing and API integration.
+                </p>
+
+                <ul>
+                    <li>Build reusable UI components</li>
+                    <li>Handle loading and errors</li>
+                    <li>Test mobile layouts</li>
+                </ul>
+
+            </div>
+
+            <!-- DevOps -->
+            <div class="card">
+
+                <span class="tag">DELIVERY</span>
+
+                <h2>🐳 Git, Linux &amp; DevOps</h2>
+
+                <p>
+                    Version control, shell, containers, CI/CD,
+                    environment configuration and deployment basics.
+                </p>
+
+                <ul>
+                    <li>Use branches and pull requests</li>
+                    <li>Containerize an app</li>
+                    <li>Automate tests and builds</li>
+                </ul>
+
+            </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            CodeCraft Academy · Full Stack Java learning workspace
+
+            <span id="sessionName"></span>
+
+        </footer>
+
+    </main>
+
+    <!-- Authentication Script -->
+    <script>
+
+        // Check user authentication
+        fetch('/api/auth/me')
+            .then(response => {
+
+                if (!response.ok) {
+                    location.replace('/login');
+                    return;
+                }
+
+                return response.json();
+
+            })
+            .then(data => {
+
+                if (data && data.user) {
+
+                    document.getElementById('sessionName').textContent =
+                        ' · Signed in as ' + data.user.name;
+
+                }
+
+            })
+            .catch(() => {
+
+                location.replace('/login');
+
+            });
+
+
+        // Logout functionality
+        document.getElementById('logout')
+            .addEventListener('click', async (event) => {
+
+                event.preventDefault();
+
+                await fetch('/api/auth/logout', {
+                    method: 'POST'
+                });
+
+                location.replace('/login');
+
+            });
+
+    </script>
+
+</body>
+</html>

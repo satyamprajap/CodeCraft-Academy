@@ -1,0 +1,40 @@
+const express=require('express'),path=require('path'),fs=require('fs'),bcrypt=require('bcryptjs'),jwt=require('jsonwebtoken'),Database=require('better-sqlite3');
+const app=express(),PORT=Number(process.env.PORT||3000),FRONTEND=path.join(__dirname,'..','frontend');
+const DATA_DIR=path.join(__dirname,'data');fs.mkdirSync(DATA_DIR,{recursive:true});
+const JWT_SECRET=process.env.JWT_SECRET||(process.env.NODE_ENV==='production'?null:'dev-only-change-this-secret-codecraft-2026');
+if(!JWT_SECRET)throw new Error('Set JWT_SECRET in production.');
+const db=new Database(path.join(DATA_DIR,'codecraft.sqlite'));db.pragma('journal_mode = WAL');
+db.exec(`CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT NOT NULL UNIQUE,password_hash TEXT NOT NULL,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS progress(user_id INTEGER NOT NULL,module_id TEXT NOT NULL,completed INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(user_id,module_id),FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);`);
+app.disable('x-powered-by');app.use(express.json({limit:'100kb'}));
+app.use((req,res,next)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');res.setHeader('X-Frame-Options','DENY');next()});
+const cookieOptions={httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/',maxAge:7*24*60*60*1000};
+function tokenFrom(req){const m=(req.headers.cookie||'').match(/(?:^|;\s*)cc_token=([^;]+)/);return m?decodeURIComponent(m[1]):null}
+function auth(req,res,next){const token=tokenFrom(req);if(!token)return res.status(401).json({error:'Please log in to continue.'});try{const p=jwt.verify(token,JWT_SECRET),u=db.prepare('SELECT id,name,email,created_at FROM users WHERE id=?').get(p.sub);if(!u)return res.status(401).json({error:'Account not found. Please log in again.'});req.user=u;next()}catch{res.clearCookie('cc_token',{path:'/'});return res.status(401).json({error:'Your session expired. Please log in again.'})}}
+const clean=u=>({id:u.id,name:u.name,email:u.email,createdAt:u.created_at});
+app.use('/assets',express.static(path.join(FRONTEND,'assets'),{index:false}));
+app.get('/login',(req,res)=>res.sendFile(path.join(FRONTEND,'login.html')));
+app.get('/register',(req,res)=>res.sendFile(path.join(FRONTEND,'register.html')));
+app.get('/api/health',(req,res)=>res.json({status:'ok',service:'CodeCraft API'}));
+app.post('/api/auth/register',async(req,res)=>{try{
+const name=String(req.body.name||'').trim(),email=String(req.body.email||'').trim().toLowerCase(),password=String(req.body.password||'');
+if(name.length<2||name.length>60)return res.status(400).json({error:'Name must be between 2 and 60 characters.'});
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254)return res.status(400).json({error:'Enter a valid email address.'});
+if(password.length<8||password.length>128)return res.status(400).json({error:'Password must be 8–128 characters long.'});
+const hash=await bcrypt.hash(password,12);let result;
+try{result=db.prepare('INSERT INTO users(name,email,password_hash) VALUES(?,?,?)').run(name,email,hash)}catch(e){if(String(e.code).includes('SQLITE_CONSTRAINT'))return res.status(409).json({error:'An account with this email already exists.'});throw e}
+const user=db.prepare('SELECT id,name,email,created_at FROM users WHERE id=?').get(result.lastInsertRowid);
+res.cookie('cc_token',jwt.sign({sub:String(user.id)},JWT_SECRET,{expiresIn:'7d'}),cookieOptions).status(201).json({user:clean(user)});
+}catch(e){console.error(e);res.status(500).json({error:'Could not create account right now.'})}});
+app.post('/api/auth/login',async(req,res)=>{try{const email=String(req.body.email||'').trim().toLowerCase(),password=String(req.body.password||''),u=db.prepare('SELECT * FROM users WHERE email=?').get(email);
+if(!u||!(await bcrypt.compare(password,u.password_hash)))return res.status(401).json({error:'Email or password is incorrect.'});
+res.cookie('cc_token',jwt.sign({sub:String(u.id)},JWT_SECRET,{expiresIn:'7d'}),cookieOptions).json({user:clean(u)});
+}catch(e){console.error(e);res.status(500).json({error:'Could not log in right now.'})}});
+app.post('/api/auth/logout',(req,res)=>{res.clearCookie('cc_token',{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/'});res.json({ok:true})});
+app.get('/api/auth/me',auth,(req,res)=>res.json({user:clean(req.user)}));
+app.get('/api/progress',auth,(req,res)=>res.json({progress:db.prepare('SELECT module_id AS moduleId,completed,updated_at AS updatedAt FROM progress WHERE user_id=?').all(req.user.id)}));
+app.put('/api/progress/:moduleId',auth,(req,res)=>{const id=String(req.params.moduleId||'');if(!/^[0-9]{1,4}$/.test(id))return res.status(400).json({error:'Invalid module ID.'});const c=req.body.completed===true?1:0;db.prepare(`INSERT INTO progress(user_id,module_id,completed,updated_at) VALUES(?,?,?,CURRENT_TIMESTAMP) ON CONFLICT(user_id,module_id) DO UPDATE SET completed=excluded.completed,updated_at=CURRENT_TIMESTAMP`).run(req.user.id,id,c);res.json({moduleId:id,completed:!!c})});
+app.get('/',auth,(req,res)=>res.sendFile(path.join(FRONTEND,'index.html')));
+for(const [urls,file] of [[['/courses','/courses.html'],'courses.html'],[['/notes','/notes.html'],'notes.html'],[['/projects','/projects.html'],'projects.html'],[['/profile','/profile.html'],'profile.html']])app.get(urls,auth,(req,res)=>res.sendFile(path.join(FRONTEND,file)));
+app.use((req,res)=>{if(req.path.startsWith('/api/'))return res.status(404).json({error:'API endpoint not found.'});res.status(404).sendFile(path.join(FRONTEND,'404.html'))});
+app.listen(PORT,()=>console.log(`CodeCraft Academy running at http://localhost:${PORT}`));

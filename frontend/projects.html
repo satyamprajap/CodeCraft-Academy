@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Projects — CodeCraft Academy</title>
+    <link rel="stylesheet" href="/assets/pages.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="bar">
+        <a class="brand" href="/"
+          ><span class="logo">C</span><span>CodeCraft Academy</span></a
+        >
+        <nav class="links">
+          <a href="/">Overview</a><a href="/courses">Courses</a
+          ><a href="/notes">Notes</a><a href="/projects">Projects</a
+          ><a href="/profile">Profile</a><a href="#" id="logout">Log out</a>
+        </nav>
+      </header>
+      <section class="intro">
+        <small>Build to learn</small>
+        <h1>Projects & practice lab</h1>
+        <p>
+          Use these project blueprints to practice database design, REST APIs,
+          frontend structure, authentication and deployment. Each card includes
+          a realistic starter scope.
+        </p>
+      </section>
+      <section class="grid">
+        <div class="card">
+          <span class="tag">JAVA · JDBC / JPA</span>
+          <h2>🎓 Student Management System</h2>
+          <p>
+            Manage student records with a searchable list, form validation and
+            persistence.
+          </p>
+          <ul>
+            <li>CRUD for students and courses</li>
+            <li>Search, pagination and validation</li>
+            <li>Database schema and error handling</li>
+          </ul>
+          <p><b>Stretch:</b> role-based admin access and CSV export.</p>
+        </div>
+        <div class="card">
+          <span class="tag">NODE · REST API</span>
+          <h2>✅ Task Tracker API</h2>
+          <p>
+            Build a REST service for tasks, due dates, priorities and status
+            changes.
+          </p>
+          <ul>
+            <li>CRUD endpoints and validation</li>
+            <li>Authentication and user-owned tasks</li>
+            <li>API tests and API documentation</li>
+          </ul>
+          <p><b>Stretch:</b> reminders, filters and Docker Compose.</p>
+        </div>
+        <div class="card">
+          <span class="tag">REACT · UI</span>
+          <h2>🖥️ React Portfolio</h2>
+          <p>
+            Create a polished portfolio with projects, skills, contact details
+            and responsive layout.
+          </p>
+          <ul>
+            <li>Reusable components and routing</li>
+            <li>Accessible navigation and forms</li>
+            <li>Deploy a production build</li>
+          </ul>
+          <p><b>Stretch:</b> connect a contact API and add dark mode.</p>
+        </div>
+        <div class="card">
+          <span class="tag">SPRING BOOT</span>
+          <h2>🌱 Course Management API</h2>
+          <p>
+            Manage courses, lessons, enrolments and learner progress using
+            Spring Boot.
+          </p>
+          <ul>
+            <li>REST controllers and service layer</li>
+            <li>JPA entities and DTO validation</li>
+            <li>Unit and integration tests</li>
+          </ul>
+          <p><b>Stretch:</b> JWT authorization and API docs.</p>
+        </div>
+        <div class="card">
+          <span class="tag">FULL STACK</span>
+          <h2>📚 Learning Dashboard</h2>
+          <p>
+            Build a course dashboard with login, progress tracking and notes.
+          </p>
+          <ul>
+            <li>Frontend and protected routes</li>
+            <li>Backend APIs and persistent progress</li>
+            <li>Responsive UI and empty/error states</li>
+          </ul>
+          <p><b>Stretch:</b> course admin and progress analytics.</p>
+        </div>
+        <div class="card">
+          <span class="tag">DEVOPS</span>
+          <h2>🐳 CI/CD Starter</h2>
+          <p>Automate testing and packaging for one of your APIs.</p>
+          <ul>
+            <li>GitHub Actions or Jenkins pipeline</li>
+            <li>Build/test on every push</li>
+            <li>Container image and health endpoint</li>
+          </ul>
+          <p><b>Stretch:</b> staging deployment and monitoring.</p>
+        </div>
+      </section>
+      <div class="callout">
+        <b>Project ZIPs</b>
+        <p>
+          This package includes project plans, not prebuilt ZIP downloads for
+          these projects. Use the project cards as a build checklist, then
+          package your completed source folder as a ZIP.
+        </p>
+      </div>
+      <footer class="footer">
+        CodeCraft Academy · Full Stack Java learning workspace
+        <span id="sessionName"></span>
+      </footer>
+    </main>
+    <script>
+      fetch("/api/auth/me")
+        .then((r) => {
+          if (!r.ok) location.replace("/login");
+          return r.json();
+        })
+        .then((d) => {
+          document.getElementById("sessionName").textContent =
+            " · Signed in as " + d.user.name;
+        })
+        .catch(() => location.replace("/login"));
+      document.getElementById("logout").addEventListener("click", async (e) => {
+        e.preventDefault();
+        await fetch("/api/auth/logout", { method: "POST" });
+        location.replace("/login");
+      });
+    </script>
+  </body>
+</html>
