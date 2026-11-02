@@ -1,0 +1,6 @@
+# This frontend is plain static HTML/CSS/JS, so there is nothing to compile.
+# A no-op command is set here because settings in this file take precedence
+# over the Build command field in the Netlify UI.
+[build]
+  command = "echo 'Static site - no build step required'"
+  publish = "."
